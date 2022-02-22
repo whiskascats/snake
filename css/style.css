@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body{
+    font-family: 'Press Start 2P', cursive;
+    background-color: #000;
+    color: #fff;
+    overflow: hidden;
+}
+.start{
+    width: 100%;
+    height: 100vh;
+    background: url(../asset/bg-start.png) no-repeat center center;
+    background-size: cover;
+}
+.start h1, .end h1{
+    font-size: 36px;
+    position: relative;
+}
+.bang{
+    animation:color-change 1s alternate infinite;
+    animation-timing-function: steps(2, jump-none);
+}
+@keyframes color-change{
+    0%{
+        color: #00FFE2
+    }
+    100%{
+        color: #FF1E19
+    }
+}
+.start h1::before{
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    left: 20px;
+}
+.start h1::after{
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    right: 20px;
+}
+.start p{
+    font-size: 24px;
+    color: #00FFE2;
+}
+.play{
+    width: 100%;
+    height: 100vh;
+}
+.board{
+    background-color: #00035A;
+    position: relative;
+}
+.words{
+    position: absolute;
+    font-size: 36px;
+}
+.snake-head{
+    box-shadow: 0 0 30px 6px #fff;
+}
+@media (max-width: 768px) {
+    .words{
+        font-size: 32px;
+    }
+}
+.lt{
+    transform: rotate(-90deg) translate(0%, -200%);
+    top: 0;
+    left: 10px;
+}
+.tl{
+    transform: translate(0%, -100%);
+    top: 0;
+    left: 0;
+}
+.rb{
+    transform: rotate(90deg) translate(0%, -200%);
+    bottom: 0;
+    right: 10px;
+}
+.br{
+    transform: rotate(180deg) translate(0%, -100%);
+    bottom: 0;
+    right: 0;
+}
+.best{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transform: translate(0, 100%);
+    display: flex;
+    align-items: center;
+}
+.best span{
+    font-size: 36px;
+}
+.score{
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(0, -100%);
+    display: flex;
+    align-items: center;
+}
+.score span{
+    font-size: 36px;
+}
+.box div{
+    border: 1px solid #002A9D;
+    background-position: cover;
+}
+@media (min-width:992.1px){
+    .box div{
+        width: 30px;
+        height: 30px;
+    }
+}
+@media (max-width:992px){
+    .box div{
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.end{
+    width: 100%;
+    height: 100vh;
+}
+.end h1{
+    font-size: 36px;
+    position: relative;
+}
+.end h1::before{
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    left: -50px;
+}
+.end h1::after{
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    right: -50px;
+}
+.touch-block{
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: 999;
+    display: flex;
+    flex-wrap: wrap;
+}
+.up{
+    width: 100%;
+    height: 35vh;
+    position: relative;
+}
+.left{
+    width: 50%;
+    height: 30vh;
+    position: relative;
+}
+.right{
+    width: 50%;
+    height: 30vh;
+    position: relative;
+}
+.bottom{
+    width: 100%;
+    height: 35vh;     
+    position: relative;
+}
+.red-border{
+    border: solid 1px red
+}
+.arrow{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    border: solid 11px rgba(0,0,0,.8);    
+}
+.up .arrow{
+    transform: rotate(45deg) translate(0%,0%);
+    bottom: -40px;
+    left: 36.5%;
+    border-right: none;
+    border-bottom: none;
+}
+.right .arrow{
+    transform: rotate(45deg) translate(0%,0%);
+    right: 30px;
+    top: 27%;
+    border-left: none;
+    border-bottom: none;
+}
+.left .arrow{
+    transform: rotate(45deg) translate(0%,0%);
+    left: 30px;
+    top: 27%;
+    border-right: none;
+    border-top: none;
+}
+.bottom .arrow{
+    transform: rotate(45deg) translate(0%,0%);
+    top: -40px;
+    left: 36.5%;
+    border-left: none;
+    border-top: none;
+}
+@media (max-width: 576px){
+    .start h1::before{
+        content: none;
+    }
+    .start h1::after{
+        content: none;
+    }
+    .words{
+        font-size: 21px;
+    }
+    .lt{
+        transform: rotate(0deg) translate(0%, -200%);
+        top: 0;
+        left: 0;
+    }
+    .tl{
+        transform: translate(0%, -100%);
+        top: 0;
+        left: 0;
+    }
+    .rb{
+        transform: rotate(180deg) translate(0%, -200%);
+        bottom: 0;
+        right: 0;
+    }
+    .br{
+        transform: rotate(180deg) translate(0%, -100%);
+        bottom: 0;
+        right: 0;
+    }
+}
+[v-cloak] {
+    display: none;
+}
