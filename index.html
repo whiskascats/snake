@@ -23,8 +23,8 @@
                 </div>
             </div>
         </div>
-        <div class="play" v-if="status == 'play-before' || status =='play'">
-            <div class="touch-block" v-if="media=='mobile'">
+        <div class="play" v-if="status =='play'">
+            <!-- <div class="touch-block" v-if="media=='mobile'">
                 <div class="up" :class="{ 'red-border': status=='play-before' }" @click="keycodeControl('up')">
                     <div class="arrow" v-show="status=='play-before'"></div>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="bottom" :class="{ 'red-border': status=='play-before' }"  @click="keycodeControl('bottom')">
                     <div class="arrow" v-show="status=='play-before'"></div>
                 </div>
-            </div>
+            </div> -->
             <div class="d-flex justify-content-center align-items-center h-100">
                 <div class="board">
                     <div class="row no-gutters" v-for="i in height" :key="i">
@@ -88,10 +88,10 @@
                     </div>
                     <span class="p-2" style="font-size: 28px; color: #000; background-color: #fff;">RESTART?</span>
                     <div class="d-flex align-items-center mt-5" style="justify-content: space-between; color: #00FFE2; font-size: 22px;">
-                        <div>
+                        <div @click="again(89)">
                             YES[Y]
                         </div>
-                        <div>
+                        <div @click="again(78)">
                             NO[N]
                         </div>
                     </div>

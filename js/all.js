@@ -91,16 +91,51 @@ let app = new Vue({
          */
         start(e) {
             let _this = this
+            let type = ''
             e.keyCode ? type = e.keyCode : type = e
             if(type == 32){    //按下空白鍵
-                _this.status = 'play-before'
+                _this.status = 'play'
                 document.removeEventListener('keydown',_this.start) 
                 _this.$nextTick(() => {
-                    document.addEventListener('keydown',_this.keycodeControl)              
+                    document.addEventListener('keydown',_this.keycodeControl)
+                    document.addEventListener('touchstart', _this.touch, { passive: false });
+                    document.addEventListener('touchmove', _this.touch, { passive: false });
+                    document.addEventListener('touchend', _this.touch, { passive: false });
                     _this.food()
                     _this.setFoodShawdow(_this.pointPos.x,_this.pointPos.y)
                     _this.drawSnake()
                 })
+            }
+        },
+        touch(e) {
+            let _this = this
+            switch (e.type){
+                case "touchstart":
+                    startX = e.touches[0].pageX;
+                    startY = e.touches[0].pageY;  
+                break;
+                case "touchend":
+                    var spanX = e.changedTouches[0].pageX - startX;
+                    var spanY = e.changedTouches[0].pageY - startY;
+
+                    if(Math.abs(spanX) > Math.abs(spanY)){      //认定为水平方向滑动
+                        if(spanX > 30){         //向右
+                            _this.keycodeControl('right')
+                        } else if(spanX < -30){ //向左
+                            _this.keycodeControl('left')
+                        }
+                    } else {                                    //认定为垂直方向滑动
+                        if(spanY > 30){         //向下
+                            _this.keycodeControl('down')
+                        } else if (spanY < -30) {//向上
+                            _this.keycodeControl('up')
+                        }
+                    }
+
+                break;
+                case "touchmove":
+                    e.preventDefault();
+                break;
             }
         },
         /**
@@ -109,7 +144,6 @@ let app = new Vue({
          */
         keycodeControl(e) {
             let type = ''
-            console.log(e.keyCode)
             e.keyCode ? type = e.keyCode : type = e
             switch(type){
                 case 37: case 'left':    //向左
@@ -127,7 +161,7 @@ let app = new Vue({
                         this.directionControl([1,0])
                     }
                 break
-                case 40: case 'bottom':    //向下
+                case 40: case 'down':    //向下
                     if(this.direction[1] != -1 || this.positionRecord.length == 1){
                         this.directionControl([0,1])
                     }                    
@@ -197,7 +231,11 @@ let app = new Vue({
                         localStorage.setItem('best', _this.score)
                         setTimeout(() => {
                             _this.status = 'end'
-                            document.querySelector('body').onkeydown = _this.again
+                            document.removeEventListener('keydown',_this.keycodeControl)
+                            document.removeEventListener('touchstart', _this.touch, { passive: false });
+                            document.removeEventListener('touchmove', _this.touch, { passive: false });
+                            document.removeEventListener('touchend', _this.touch, { passive: false });
+                            document.addEventListener('keydown',_this.again)
                         }, 1500);
                     }
                 }
@@ -267,8 +305,10 @@ let app = new Vue({
         },
         again(e) {
             let _this = this
-            if(e.keyCode == 89) {
-                _this.status = 'play-before'
+            let type = ''
+            e.keyCode ? type = e.keyCode : type = e
+            if(type == 89) {
+                _this.status = 'play'
                 _this.score = 0
                 _this.speed = 400
                 _this.alive = true
@@ -279,24 +319,29 @@ let app = new Vue({
                     }
                 ]
                 _this.$nextTick(() => {
-                    _this.drawSnake();
-                    _this.food();
-                    document.querySelector('body').onkeydown = _this.keycodeControl
+                    document.addEventListener('keydown',_this.keycodeControl)
+                    document.addEventListener('touchstart', _this.touch, { passive: false });
+                    document.addEventListener('touchmove', _this.touch, { passive: false });
+                    document.addEventListener('touchend', _this.touch, { passive: false });
+                    _this.food()
+                    _this.setFoodShawdow(_this.pointPos.x,_this.pointPos.y)
+                    _this.drawSnake()
                 })
             }
-            else if(e.keyCode == 78){
+            else if(type == 78){
                 _this.status = 'start'
                 _this.score = 0
                 _this.speed = 400
                 _this.alive = true
                 _this.positionRecord = [
                     {
-                        x: 14,
-                        y: 7
+                        x: Math.round(this.width/2),
+                        y: Math.round(this.height/2)
                     }
                 ]
                 _this.$nextTick(() => {
-                    document.querySelector('body').onkeydown = _this.start;
+                    document.removeEventListener('keydown',_this.again) 
+                    document.addEventListener('keydown',_this.start)
                 })
             }
         }
