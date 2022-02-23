@@ -8,7 +8,6 @@ let app = new Vue({
         alive: true,
         direction: [0,0],
         interval: 0,
-        snakeSpeed: 300,    //ms
         score: 0,
         bestScore: 0,
         alive: true,
@@ -45,23 +44,26 @@ let app = new Vue({
     watch: {
         score: function() {
             if(this.score >= 60) {
-                this.speed = 15
-            }
-            else if(this.score >= 40) {
-                this.speed = 25
-            }
-            else if(this.score >= 20) {
                 this.speed = 50
             }
-            else if(this.score >= 10) {
+            else if(this.score >= 40) {
                 this.speed = 100
             }
-            else if(this.score >= 5) {
+            else if(this.score >= 20) {
+                this.speed = 150
+            }
+            else if(this.score >= 10) {
                 this.speed = 200
+            }
+            else if(this.score >= 5) {
+                this.speed = 300
             }
         }
     },
     methods: {
+        /**
+         * 遊戲桌尺寸設定
+         */
         boardSet() {
             let scrollWidth = document.documentElement.scrollWidth
             if(scrollWidth>992) {
@@ -80,8 +82,8 @@ let app = new Vue({
                 this.media = 'pc'
             }
             else{
-                this.width = 14
-                this.height = 20
+                this.width = 3
+                this.height = 3
                 this.media = 'mobile'
             }
         },
@@ -102,11 +104,14 @@ let app = new Vue({
                     document.addEventListener('touchmove', _this.touch, { passive: false });
                     document.addEventListener('touchend', _this.touch, { passive: false });
                     _this.food()
-                    _this.setFoodShawdow(_this.pointPos.x,_this.pointPos.y)
                     _this.drawSnake()
                 })
             }
         },
+        /**
+         * 手機觸控事件
+         * @param {Event} e 
+         */
         touch(e) {
             let _this = this
             switch (e.type){
@@ -118,13 +123,13 @@ let app = new Vue({
                     var spanX = e.changedTouches[0].pageX - startX;
                     var spanY = e.changedTouches[0].pageY - startY;
 
-                    if(Math.abs(spanX) > Math.abs(spanY)){      //认定为水平方向滑动
+                    if(Math.abs(spanX) > Math.abs(spanY)){      //水平方向
                         if(spanX > 30){         //向右
                             _this.keycodeControl('right')
                         } else if(spanX < -30){ //向左
                             _this.keycodeControl('left')
                         }
-                    } else {                                    //认定为垂直方向滑动
+                    } else {                                    //垂直方向
                         if(spanY > 30){         //向下
                             _this.keycodeControl('down')
                         } else if (spanY < -30) {//向上
@@ -182,6 +187,10 @@ let app = new Vue({
                 _this.move(direction)
             }, _this.speed);
         },
+        /**
+         * 檢查穿牆、走過的地方還原、檢查得分
+         * @param {Array} direction 前進方向
+         */
         move(direction) {
             let _this = this
             let snakeLength = _this.positionRecord.length
@@ -193,9 +202,7 @@ let app = new Vue({
                 y: (headPos.y + direction[1] + _this.height) % _this.height
             }
             _this.positionRecord.push(newPosition)
-            rows[footPos.y].children[footPos.x].children[0].style.backgroundColor = '#00035A'
-            rows[footPos.y].children[footPos.x].children[0].style.opacity = '1'
-            rows[footPos.y].children[footPos.x].children[0].style['box-shadow'] = 'none'
+            rows[footPos.y].children[footPos.x].children[0].style = ''
             _this.setFoodShawdow(_this.pointPos.x,_this.pointPos.y)
             if(newPosition.x == _this.pointPos.x && newPosition.y == _this.pointPos.y) {    //得分
                 _this.score ++
@@ -207,6 +214,9 @@ let app = new Vue({
             }
             _this.drawSnake()
         },
+        /**
+         * 蛇的身體、陰影、檢查碰撞
+         */
         drawSnake() {
             let _this = this
             if(_this.alive){
@@ -251,6 +261,11 @@ let app = new Vue({
             let rows = document.querySelectorAll(".row")
             let randomX = Math.floor(Math.random()*this.width)
             let randomY = Math.floor(Math.random()*this.height)
+            let repeat = this.positionRecord.filter(item => randomX==item.x&&randomY==item.y)
+            if(repeat.length>0){
+                this.food()
+                return false
+            }
             rows[randomY].children[randomX].children[0].style.background = 'url(./asset/ic-point.png) center center' 
             this.pointPos = {
                 x: randomX,
@@ -303,6 +318,10 @@ let app = new Vue({
             }
             rows[_this.pointPos.y].children[_this.pointPos.x].children[0].style.background = ''
         },
+        /**
+         * 遊戲結束時按鍵事件
+         * @param {Event}} e 
+         */
         again(e) {
             let _this = this
             let type = ''
@@ -324,7 +343,6 @@ let app = new Vue({
                     document.addEventListener('touchmove', _this.touch, { passive: false });
                     document.addEventListener('touchend', _this.touch, { passive: false });
                     _this.food()
-                    _this.setFoodShawdow(_this.pointPos.x,_this.pointPos.y)
                     _this.drawSnake()
                 })
             }
@@ -344,6 +362,11 @@ let app = new Vue({
                     document.addEventListener('keydown',_this.start)
                 })
             }
+        },
+        stop() {
+            console.log(this.interval)
+            clearInterval(this.interval)
+            console.log(this.interval)
         }
         
     },

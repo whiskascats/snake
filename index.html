@@ -14,6 +14,7 @@
 
 <body>
     <div id="app" v-cloak>
+        <!-- <button @click.prevent="stop">stop</button> -->
         <div class="start" v-if="status == 'start'">
             <div class="d-flex justify-content-center align-items-center h-100">
                 <div class="text-center">
@@ -24,20 +25,6 @@
             </div>
         </div>
         <div class="play" v-if="status =='play'">
-            <!-- <div class="touch-block" v-if="media=='mobile'">
-                <div class="up" :class="{ 'red-border': status=='play-before' }" @click="keycodeControl('up')">
-                    <div class="arrow" v-show="status=='play-before'"></div>
-                </div>
-                <div class="left" :class="{ 'red-border': status=='play-before' }"  @click="keycodeControl('left')">
-                    <div class="arrow" v-show="status=='play-before'"></div>
-                </div>
-                <div class="right" :class="{ 'red-border': status=='play-before' }"  @click="keycodeControl('right')">
-                    <div class="arrow" v-show="status=='play-before'"></div>
-                </div>
-                <div class="bottom" :class="{ 'red-border': status=='play-before' }"  @click="keycodeControl('bottom')">
-                    <div class="arrow" v-show="status=='play-before'"></div>
-                </div>
-            </div> -->
             <div class="d-flex justify-content-center align-items-center h-100">
                 <div class="board">
                     <div class="row no-gutters" v-for="i in height" :key="i">
