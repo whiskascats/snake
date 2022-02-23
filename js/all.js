@@ -82,8 +82,8 @@ let app = new Vue({
                 this.media = 'pc'
             }
             else{
-                this.width = 3
-                this.height = 3
+                this.width = 14
+                this.height = 20
                 this.media = 'mobile'
             }
         },
