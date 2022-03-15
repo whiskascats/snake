@@ -9,7 +9,7 @@ body{
 .start{
     width: 100%;
     height: 100vh;
-    background: url(../asset/bg-start.png) no-repeat center center;
+    background: url(../assets/bg-start.png) no-repeat center center;
     background-size: cover;
 }
 .start h1, .end h1{
@@ -182,6 +182,6 @@ body{
         right: 0;
     }
 }
-[v-cloak] {
-    display: none;
+.food-img{
+    background: url(../assets/ic-point.png) center center;
 }
