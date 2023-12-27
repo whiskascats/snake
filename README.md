@@ -1,4 +1,6 @@
-# snake-cli
+# JS貪吃蛇
+
+網址: https://whiskascats.github.io/snake/ 
 
 ## Project setup
 ```
